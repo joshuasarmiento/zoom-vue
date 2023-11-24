@@ -31,6 +31,7 @@ async function getSignature() {
         meetingNumber: meetingNumber,
         role: role,
       }),
+      mode: 'no-cors',
     });
 
     const data = await response.json();
