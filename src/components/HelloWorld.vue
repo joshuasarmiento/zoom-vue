@@ -83,9 +83,9 @@ function startMeeting(signature) {
 </script>
 
 <template>
-  <h1>Zoom Meeting SDK Vue.js Sample</h1>
-
-  <button @click='getSignature'>Join Meeting</button>
+  <h1 id="title" tabindex="0">Zoom Meeting SDK Vue.js Sample</h1>
+  
+  <button @click='getSignature' aria-describedby="title" aria-label="Join Meeting Button">Join Meeting</button>
 </template>
 
 <style scoped>
