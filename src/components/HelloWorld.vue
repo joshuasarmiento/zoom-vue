@@ -9,7 +9,7 @@ ZoomMtg.i18n.load('en-US');
 ZoomMtg.i18n.reload('en-US');
 
 
-var authEndpoint = 'https://zoom-endpt.vercel.app/'
+var authEndpoint = 'https://zoom-endpt.vercel.app'
 var sdkKey = 'x89uSWg9S_mbkO0QJmdMQ'
 var meetingNumber = '96933602211'
 var passWord = 'ML4gCD'
