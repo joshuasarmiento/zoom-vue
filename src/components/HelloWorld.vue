@@ -9,7 +9,7 @@ ZoomMtg.i18n.load('en-US');
 ZoomMtg.i18n.reload('en-US');
 
 
-var authEndpoint = 'http://localhost:4000/'
+var authEndpoint = 'https://zoom-endpt.vercel.app/'
 var sdkKey = 'x89uSWg9S_mbkO0QJmdMQ'
 var meetingNumber = '96933602211'
 var passWord = 'ML4gCD'
@@ -18,8 +18,7 @@ var userName = 'Joshua Sarmiento'
 var userEmail = 'joshua_sarmiento@asterra.com.ph'
 var registrantToken = ''
 var zakToken = ''
-// var leaveUrl = 'https://zoom.us'
-var leaveUrl = 'http://localhost:5173/'
+var leaveUrl = 'https://zoom.us'
 
 async function getSignature() {
   try {
