@@ -21,25 +21,33 @@ var zakToken = ''
 var leaveUrl = 'https://zoom.us'
 
 async function getSignature() {
-  try {
-    const response = await fetch(authEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        meetingNumber: meetingNumber,
-        role: role,
-      }),
-      mode: 'no-cors',
-    });
+    try {
+        const response = await fetch(authEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                meetingNumber: meetingNumber,
+                role: role,
+            }),
+        });
 
-    const data = await response.json();
-    console.log(data);
-    startMeeting(data.signature);
-  } catch (error) {
-    console.error(error);
-  }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+            const data = await response.json();
+            console.log(data);
+            startMeeting(data.signature);
+        }
+
+    } catch (error) {
+        console.error(`Fetch Error: ${error}`);
+        let message = document.createElement("p");
+        message.setAttribute("role", "alert");
+        message.innerText = `Oops! Something went wrong while trying to join the meeting. ${error.message}`;
+        document.body.appendChild(message);
+    }
 }
 
 
