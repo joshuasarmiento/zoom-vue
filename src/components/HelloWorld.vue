@@ -1,57 +1,66 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { ZoomMtg } from "@zoomus/websdk";
+import { ZoomMtg } from '@zoomus/websdk';
 
-ZoomMtg.setZoomJSLib("https://source.zoom.us/2.18.0/lib", "/av");
+ZoomMtg.setZoomJSLib('https://source.zoom.us/2.18.0/lib', '/av');
 ZoomMtg.preLoadWasm();
 ZoomMtg.prepareWebSDK();
 // loads language files, also passes any error messages to the ui
-ZoomMtg.i18n.load("en-US");
-ZoomMtg.i18n.reload("en-US");
+ZoomMtg.i18n.load('en-US');
+ZoomMtg.i18n.reload('en-US');
+
 
 // var authEndpoint = 'https://zoom-endpt.mandalay.com.ph/'
-var authEndpoint = "https://zoom-endpt.vercel.app/";
-var sdkKey = "x89uSWg9S_mbkO0QJmdMQ";
-var meetingNumber = "96933602211";
-var passWord = "ML4gCD";
-var role = 0;
-var userName = "Joshua Sarmiento";
-var userEmail = "joshua_sarmiento@asterra.com.ph";
-var registrantToken = "";
-var zakToken = "";
-var leaveUrl = "https://zoom.us";
+var authEndpoint = 'https://zoom-endpt.vercel.app/'
+var sdkKey = 'x89uSWg9S_mbkO0QJmdMQ'
+var meetingNumber = '93755113870'
+var passWord = 'bH2e8v'
+var role = 0
+var userName = 'MBV Party'
+var userEmail = ref('');
+var registrantToken = ''
+var zakToken = ''
+var leaveUrl = 'https://www.onevillar.ph/'
 
 async function getSignature() {
-  try {
-    const response = await fetch(authEndpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        meetingNumber: meetingNumber,
-        role: role,
-      }),
-    });
+    try {
+        const response = await fetch(authEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                meetingNumber: meetingNumber,
+                role: role,
+            }),
+        });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    } else {
-      const data = await response.json();
-      console.log(data);
-      startMeeting(data.signature);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+            const data = await response.json();
+            console.log(data);
+            startMeeting(data.signature);
+        }
+
+        var emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+        if (!emailRegex.test(userEmail.value)) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+        
+    } catch (error) {
+        console.error(`Fetch Error: ${error}`);
+        let message = document.createElement("p");
+        message.setAttribute("role", "alert");
+        message.innerText = `Oops! Something went wrong while trying to join the meeting. ${error.message}`;
+        document.body.appendChild(message);
     }
-  } catch (error) {
-    console.error(`Fetch Error: ${error}`);
-    let message = document.createElement("p");
-    message.setAttribute("role", "alert");
-    message.innerText = `Oops! Something went wrong while trying to join the meeting. ${error.message}`;
-    document.body.appendChild(message);
-  }
 }
 
+
 function startMeeting(signature) {
-  document.getElementById("zmmtg-root").style.display = "block";
+  document.getElementById('zmmtg-root').style.display = 'block';
 
   ZoomMtg.init({
     leaveUrl: leaveUrl,
@@ -71,12 +80,12 @@ function startMeeting(signature) {
         },
         error: (error) => {
           console.log(error);
-        },
+        }
       });
     },
     error: (error) => {
       console.log(error);
-    },
+    }
   });
 }
 
@@ -98,7 +107,6 @@ onMounted(() => {
     meetingStatus.value = 'Zoom is currently available for the scheduled meeting.';
   }
 });
-
 </script>
 
 <template>
@@ -108,6 +116,10 @@ onMounted(() => {
         tabindex="0"
         aria-live="polite">{{ meetingStatus }}</h1>
       <p id="date">{{ meetingDate }}</p>
+
+      <label for="email">Email:</label>
+      <input id="email" type="email" v-model="userEmail" required>
+
       <button
         @click="joinMeeting"
         @keydown.enter.prevent="getSignature"
